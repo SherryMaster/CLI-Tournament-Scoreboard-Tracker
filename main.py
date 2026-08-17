@@ -49,6 +49,22 @@ def show_scoreboard():
         print(f"{i+1}\t{player}\t\t{scores[i]}")
     print("\n")
 
+def show_leaderboard():
+    order = sorted(
+        range(len(scores)),
+        key=lambda i: scores[i],
+        reverse=True
+    )
+
+    sorted_scores = [scores[i] for i in order]
+    sorted_players = [players[i] for i in order]
+
+    print("Rank\tName\t\tScore")
+    print("=======================================")
+    for i, player in enumerate(sorted_players):
+        print(f"{i+1}\t{player}\t\t{sorted_scores[i]}")
+    print("\n")
+
 def record_points():
     print("Record points for a player!")
     show_scoreboard()
@@ -92,7 +108,7 @@ if __name__ == "__main__":
         elif choice == 3:
             show_scoreboard()
         elif choice == 4:
-            pass
+            show_leaderboard()
         elif choice == 5:
             program_running = False
 
