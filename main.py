@@ -8,17 +8,22 @@ PLAYERS_PATH = DATA_PATH / "players.txt"
 SCORES_PATH = DATA_PATH / "scores.txt"
 
 players = []
+scores = []
 
 def load_data():
-    global players
+    global players, scores
     PLAYERS_PATH.touch(exist_ok=True)
     SCORES_PATH.touch(exist_ok=True)
-    with open(PLAYERS_PATH) as f:
-        players = [player.replace("\n", "") for player in f.readlines()]
+    with open(PLAYERS_PATH) as f1:
+        with open(SCORES_PATH) as f2:
+            players = [player.replace("\n", "") for player in f1.readlines()]
+            scores = [int(score.replace("\n", "")) for score in f2.readlines()]
 
 def save_data():
     with open(PLAYERS_PATH, "w") as f:
         f.writelines([player + "\n" for player in players])
+    with open(SCORES_PATH, "w") as f:
+        f.writelines([str(score) + "\n" for score in scores])
 
 def display_main_menu():
     print("1) Add Player")
@@ -33,12 +38,16 @@ def add_player():
     name = input("Enter Player name: ")
     
     players.append(name)
+    scores.append(0)
     save_data()
     print(f"Player {name} added successfully!")
 
 def show_scoreboard():
-    for player in players:
-        print(player)
+    print("Index\tName\t\tScore")
+    print("=======================================")
+    for i, player in enumerate(players):
+        print(f"{i+1}\t{player}\t\t{scores[i]}")
+    print("\n")
 
 program_running = True
 
