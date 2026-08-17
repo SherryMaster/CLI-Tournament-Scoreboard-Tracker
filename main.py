@@ -49,6 +49,26 @@ def show_scoreboard():
         print(f"{i+1}\t{player}\t\t{scores[i]}")
     print("\n")
 
+def record_points():
+    print("Record points for a player!")
+    show_scoreboard()
+    while True:
+        try:
+            index = int(input("Enter the index of the player: ")) - 1
+            if not 0 <= index < len(players):
+                print("Invalid player index!")
+                continue
+            print(f"player {players[index]} selected!")
+            points = int(input("Enter the points to add: "))
+            break
+        except ValueError:
+            print("Invalid input, try again!")
+    
+    scores[index] += points
+    save_data()
+    print(f"Added {points} points to {players[index]}!")
+
+
 program_running = True
 
 if __name__ == "__main__":
@@ -58,13 +78,21 @@ if __name__ == "__main__":
 
     while program_running:
         display_main_menu()
-
-        choice = int(input("Enter a choice: "))
+        while True:
+            try:
+                choice = int(input("Enter a choice: "))
+                break
+            except:
+                print("Invalid Input, try again!")
 
         if choice == 1:
             add_player()
+        elif choice == 2:
+            record_points()
         elif choice == 3:
             show_scoreboard()
+        elif choice == 4:
+            pass
         elif choice == 5:
             program_running = False
 
