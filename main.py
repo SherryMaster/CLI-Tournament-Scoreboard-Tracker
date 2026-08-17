@@ -1,7 +1,7 @@
-import os
 from pathlib import Path
 
-DATA_PATH = Path("data")
+BASE_DIR = Path(__file__).resolve().parent
+DATA_PATH = BASE_DIR / "data"
 DATA_PATH.mkdir(exist_ok=True, parents=True)
 
 PLAYERS_PATH = DATA_PATH / "players.txt"
@@ -10,10 +10,15 @@ SCORES_PATH = DATA_PATH / "scores.txt"
 players = []
 
 def load_data():
-    pass
+    global players
+    PLAYERS_PATH.touch(exist_ok=True)
+    SCORES_PATH.touch(exist_ok=True)
+    with open(PLAYERS_PATH) as f:
+        players = [player.replace("\n", "") for player in f.readlines()]
 
 def save_data():
-    pass
+    with open(PLAYERS_PATH, "w") as f:
+        f.writelines([player + "\n" for player in players])
 
 def display_main_menu():
     print("1) Add Player")
@@ -22,6 +27,18 @@ def display_main_menu():
     print("4) Show Leaderboard")
     print("5) exit")
     print()
+
+def add_player():
+    print("Add a player!")
+    name = input("Enter Player name: ")
+    
+    players.append(name)
+    save_data()
+    print(f"Player {name} added successfully!")
+
+def show_scoreboard():
+    for player in players:
+        print(player)
 
 program_running = True
 
@@ -35,7 +52,11 @@ if __name__ == "__main__":
 
         choice = int(input("Enter a choice: "))
 
-        if choice == 5:
+        if choice == 1:
+            add_player()
+        elif choice == 3:
+            show_scoreboard()
+        elif choice == 5:
             program_running = False
 
 
