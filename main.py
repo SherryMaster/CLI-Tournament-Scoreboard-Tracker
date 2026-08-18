@@ -36,8 +36,15 @@ def display_main_menu():
 
 def add_player():
     print("Add a player!")
-    name = input("Enter Player name: ")
-    
+    while True:
+        name = input("Enter Player name: ")
+        if not name.strip():
+            print("Player name cannot be empty!")
+            continue
+        if name in players: # Case sensitive check for existing player
+            print("Player already exists!")
+            continue
+        break
     players.append(name)
     scores.append(0)
     save_data()
@@ -67,6 +74,9 @@ def show_leaderboard():
     print("\n")
 
 def record_points():
+    if not players:
+        print("No players available to record points!")
+        return
     print("Record points for a player!")
     show_scoreboard()
     while True:
@@ -76,7 +86,18 @@ def record_points():
                 print("Invalid player index!")
                 continue
             print(f"player {players[index]} selected!")
-            points = int(input("Enter the points to add: "))
+            while True:
+                try:
+                    points = int(input("Enter the points to add: "))
+                    if points < 0:
+                        print("Points cannot be negative!")
+                        continue
+                    if points > 100:
+                        print("Points cannot be greater than 100!")
+                        continue
+                    break
+                except ValueError:
+                    print("Invalid input, try again!")
             break
         except ValueError:
             print("Invalid input, try again!")
