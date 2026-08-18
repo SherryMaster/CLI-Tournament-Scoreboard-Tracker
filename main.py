@@ -30,7 +30,8 @@ def display_main_menu():
     print("2) Record Points")
     print("3) Show Scoreboard")
     print("4) Show Leaderboard")
-    print("5) exit")
+    print("5) Show Statistics")
+    print("6) exit")
     print()
 
 def add_player():
@@ -84,6 +85,14 @@ def record_points():
     save_data()
     print(f"Added {points} points to {players[index]}!")
 
+def show_statistics():
+    print("Statistics:")
+    print(f"Total Players: {len(players)}")
+    print(f"Total Points: {sum(scores)}")
+    print(f"Average Points per Player: {sum(scores)/len(players) if players else 0}")
+    print(f"Highest Score: {max(scores) if scores else 0}")
+    print(f"Lowest Score: {min(scores) if scores else 0}")
+    print("\n")
 
 program_running = True
 
@@ -110,6 +119,8 @@ if __name__ == "__main__":
         elif choice == 4:
             show_leaderboard()
         elif choice == 5:
+            show_statistics()
+        elif choice == 6:
             program_running = False
 
 
