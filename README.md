@@ -4,13 +4,15 @@ Simple tracker for tournament players and scores.
 
 ## Overview
 
-This small project reads player and score data and displays a tournament scoreboard.
+This project is an interactive tournament scoreboard tracker. It lets you add players, record points, view a scoreboard or leaderboard, and inspect basic statistics from two local text files.
 
 ## Features
 
-- Read players and scores from plain text files
-- Produce a ranked scoreboard (highest score first)
-- Easy to run locally with Python
+- Add players interactively
+- Record points for an existing player
+- Show a scoreboard in the current player order
+- Show a leaderboard sorted by highest score first
+- Show basic statistics such as total players and total points
 
 ## Requirements
 
@@ -26,8 +28,11 @@ python main.py
 
 ## Usage
 
-- Place player names in `data/players.txt`, one name per line.
-- Place scores in `data/scores.txt`. Use a simple per-line format pairing names and scores (example formats below).
+- Run the program from the project root with `python main.py`.
+- The program creates `data/players.txt` and `data/scores.txt` automatically if they do not exist.
+- Player names are stored one per line in `data/players.txt`.
+- Scores are stored one integer per line in `data/scores.txt`.
+- The two files are positional: the first player matches the first score, the second player matches the second score, and so on.
 
 Example `players.txt`:
 
@@ -37,41 +42,32 @@ Bob
 Charlie
 ```
 
-Example `scores.txt` (option A, name and score separated by comma):
+Example `scores.txt`:
 
 ```
-Alice, 12
-Bob, 9
-Charlie, 15
+12
+9
+15
 ```
 
-Or (option B, tab or space separated):
+Notes:
 
-```
-Alice 12
-Bob 9
-Charlie 15
-```
-
-Adjust the files to match the parser used by `main.py`.
-
-## Case-sensitivity decision
-
-This project treats player names as case-insensitive for matching and deduplication. Input should be treated as human-friendly (e.g., `alice`, `Alice`, and `ALICE` are the same player).
-
-Implementation note: the program should normalize names (for example, to lowercase) when reading and comparing.
+- Adding a player starts them at `0` points.
+- Player-name checks are case-sensitive, so `alice` and `Alice` are treated as different names.
+- Recording points requires selecting a player by index from the scoreboard.
+- Points must be integers between `0` and `100`.
 
 ## Manual Verification
 
 Normal cases
 
 - Add the example files above and run `python main.py`.
-- Expected: a ranked list showing `Charlie` first (15), then `Alice` (12), then `Bob` (9).
+- Expected: `Show Scoreboard` lists players in file order, and `Show Leaderboard` shows `Charlie` first with `15`, then `Alice` with `12`, then `Bob` with `9`.
 
-Invalid-input cases to try
+Input checks to try
 
-- Malformed score line (e.g., `Alice: twelve`): verify the program either logs a clear error or skips the line with a warning.
-- Missing files: remove `data/players.txt` or `data/scores.txt` and verify the program prints a helpful message rather than crashing.
-- Duplicate names with different casing (e.g., `alice` and `Alice`): verify they are treated as the same player and scores are aggregated or handled per program design.
-
-If you'd like, I can also update `main.py` to include explicit parsing rules and graceful error handling to match these expectations.
+- Enter a blank player name when adding a player: the program should reject it.
+- Try adding a duplicate name with the exact same casing: the program should reject it.
+- Enter a non-integer choice or point value: the program should prompt again.
+- Enter points below `0` or above `100`: the program should reject the value.
+- Remove both data files and run the program again: it should recreate them automatically.
