@@ -53,6 +53,9 @@ def add_player():
 def show_scoreboard():
     print("Index\tName\t\tScore")
     print("=======================================")
+    if not players:
+        print("No players available! Once added, they will be displayed here.")
+        return
     for i, player in enumerate(players):
         print(f"{i+1}\t{player}\t\t{scores[i]}")
     print("\n")
@@ -69,6 +72,9 @@ def show_leaderboard():
 
     print("Rank\tName\t\tScore")
     print("=======================================")
+    if not sorted_players:
+        print("No players available! Once added, they will be displayed here.")
+        return
     for i, player in enumerate(sorted_players):
         print(f"{i+1}\t{player}\t\t{sorted_scores[i]}")
     print("\n")
@@ -128,9 +134,12 @@ if __name__ == "__main__":
             try:
                 choice = int(input("Enter a choice: "))
                 break
-            except:
+            except ValueError:
                 print("Invalid Input, try again!")
 
+        if choice < 1 or choice > 6:
+            input("Invalid choice, try again! choices are 1-6. Press Enter to continue...")
+            continue
         if choice == 1:
             add_player()
         elif choice == 2:
